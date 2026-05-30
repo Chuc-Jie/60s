@@ -3,10 +3,11 @@ export const config = {
   port: process.env.PORT ? +process.env.PORT : 4399,
   group: '595941841',
   author: 'Viki <hi@viki.moe>',
-  github: 'https://github.com/vikiboss/60s',
+  github: 'https://github.com/Chuc-Jie/60s',
+  upstream: 'https://github.com/vikiboss/60s',
   debug: !!process.env.DEBUG,
   overseas_first: !!process.env.OVERSEAS_FIRST,
   encodingParamName: process.env.ENCODING_PARAM_NAME || 'encoding',
 }
 
-export const COMMON_MSG = `获取成功。开源地址 ${config.github}，反馈群 ${config.group}。`
+export const COMMON_MSG = `获取成功。开源地址 ${config.github}，官方源 ${config.upstream}，官方反馈群 ${config.group}。`
