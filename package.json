@@ -26,6 +26,7 @@
     "@types/fontkit": "^2.0.8",
     "@types/node": "^22.19.11",
     "bumpp": "^10.4.1",
+    "esbuild": "^0.28.0",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
     "wrangler": "^4.64.0"
@@ -39,7 +40,8 @@
     "update-lockfile": "pnpm install && bun install && deno install --allow-scripts",
     "docker:build": "docker build -t vikiboss/60s .",
     "docker:run": "docker run --name 60s -p 4399:4399 -d vikiboss/60s",
-    "docker:re-run": "docker stop 60s && docker rm 60s && pnpm run docker:run"
+    "docker:re-run": "docker stop 60s && docker rm 60s && pnpm run docker:run",
+    "build:vercel": "node scripts/build-vercel.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

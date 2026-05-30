@@ -6,9 +6,9 @@ export default async function handler(req: Request): Promise<Response> {
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e)
     const stack = e instanceof Error ? e.stack : ''
-    return new Response(JSON.stringify({ error: message, stack }, null, 2), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
+    return new Response(
+      JSON.stringify({ error: message, stack: stack?.split('\n').slice(0, 5) }, null, 2),
+      { status: 500, headers: { 'Content-Type': 'application/json' } },
+    )
   }
 }
