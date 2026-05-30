@@ -154,6 +154,7 @@ interface RouteEntry {
 const routes: RouteEntry[] = [
   { pattern: '/', handler: () => rootHandler },
   { pattern: '/health', handler: () => healthHandler },
+  { pattern: '/docs', handler: () => docsHandler },
   { pattern: '/endpoints', handler: () => endpointsHandler },
 
   { pattern: '/v2/60s', handler: () => service60s.handle() },
@@ -257,6 +258,7 @@ const routes: RouteEntry[] = [
 ]
 
 import { Common } from '../src/common.ts'
+import { docsHTML } from '../src/docs-content.ts'
 
 function getEndpoints(): string[] {
   return routes.filter((r) => typeof r.pattern === 'string').map((r) => r.pattern as string)
@@ -272,6 +274,13 @@ async function rootHandler(ctx: FakeOakCtx, next: () => Promise<void>) {
 // Health check
 async function healthHandler(ctx: FakeOakCtx, next: () => Promise<void>) {
   ctx.response.body = 'ok'
+  await next()
+}
+
+// API documentation
+async function docsHandler(ctx: FakeOakCtx, next: () => Promise<void>) {
+  ctx.response.headers.set('Content-Type', 'text/html; charset=utf-8')
+  ctx.response.body = docsHTML
   await next()
 }
 
