@@ -1,23 +1,22 @@
 import * as esbuild from 'esbuild'
-import { readFileSync, existsSync, mkdirSync, unlinkSync } from 'node:fs'
+import { readFileSync, existsSync, mkdirSync, unlinkSync, writeFileSync } from 'node:fs'
 
 const pkg = JSON.parse(readFileSync('package.json', 'utf-8'))
 
-// Only keep Node.js built-ins external — everything else gets bundled inline
 const external = ['node:*']
 
-// Ensure api/ dir exists
 if (!existsSync('api')) {
   mkdirSync('api')
 }
 
+// Build as ESM — avoids the CJS module.exports ordering issue
 await esbuild.build({
   entryPoints: ['api/index.ts'],
   bundle: true,
   platform: 'node',
   target: 'node20',
-  format: 'cjs',
-  outfile: 'api/index.js',
+  format: 'esm',
+  outfile: 'api/index.mjs',
   external,
   resolveExtensions: ['.ts', '.tsx', '.js', '.json'],
   banner: {
@@ -25,7 +24,7 @@ await esbuild.build({
   },
 })
 
-// Remove the .ts file so Vercel only sees the compiled .js
+// Remove .ts file so Vercel doesn't re-compile it
 unlinkSync('api/index.ts')
 
-console.log('✅ api/index.js built successfully, api/index.ts removed')
+console.log('✅ api/index.mjs built successfully (ESM format)')

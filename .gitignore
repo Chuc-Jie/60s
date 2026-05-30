@@ -3,3 +3,7 @@ node_modules
 .env
 
 test/*.json
+
+# Vercel build artifacts
+api/index.js
+api/index.mjs
