@@ -142,7 +142,7 @@ class ServiceWeather {
     return Number.isNaN(parsed) ? fallback : parsed
   }
 
-  handle(): RouterMiddleware<'/weather'> {
+  handle() {
     return async (ctx) => {
       try {
         const location = (await Common.getParam('query', ctx.request)) || '北京'
@@ -253,7 +253,7 @@ class ServiceWeather {
     }
   }
 
-  handleForecast(): RouterMiddleware<'/weather/forecast'> {
+  handleForecast() {
     return async (ctx) => {
       try {
         const location = (await Common.getParam('query', ctx.request)) || '北京'

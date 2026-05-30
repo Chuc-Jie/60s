@@ -23,7 +23,7 @@ interface ColorPalette {
 }
 
 class ServiceColor {
-  handle(): RouterMiddleware<'/color'> {
+  handle() {
     return async (ctx) => {
       const color = await Common.getParam('color', ctx.request)
 
@@ -70,7 +70,7 @@ class ServiceColor {
     }
   }
 
-  handlePalette(): RouterMiddleware<'/color/palette'> {
+  handlePalette() {
     return async (ctx) => {
       const hex = (await Common.getParam('color', ctx.request)) || this.generateRandomColor()
 

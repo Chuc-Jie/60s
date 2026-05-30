@@ -3,7 +3,7 @@ import { Common } from '../common.ts'
 class ServiceExRate {
   #cache = new Map<string, RateItem>()
 
-  handle(): RouterMiddleware<'/exchange_rate'> {
+  handle() {
     return async (ctx) => {
       const currency = ctx.request.url.searchParams.get('currency') || 'CNY'
 

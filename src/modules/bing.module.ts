@@ -13,7 +13,7 @@ interface BingItem {
 class ServiceBing {
   #cache = new Map<string, BingItem>()
 
-  handle(): RouterMiddleware<'/bing'> {
+  handle() {
     return async (ctx) => {
       const data = await this.#fetch()
 

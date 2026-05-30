@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceToutiao {
-  handle(): RouterMiddleware<'/toutiao'> {
+  handle() {
     return async (ctx) => {
       const data = await this.#fetch()
 

@@ -2,7 +2,7 @@ import { Common } from '../../common.ts'
 import answerData from './answer.json' with { type: 'json' }
 
 class ServiceAnswer {
-  handle(): RouterMiddleware<'/answer'> {
+  handle() {
     return async (ctx) => {
       const id = await Common.getParam('id', ctx.request)
 

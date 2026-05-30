@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceChangYa {
-  handle(): RouterMiddleware<'/changya'> {
+  handle() {
     return async (ctx) => {
       const data = await this.#fetch()
 

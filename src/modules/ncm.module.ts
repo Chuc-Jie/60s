@@ -4,7 +4,7 @@ class ServiceNcm {
   private cache = new Map<string, { data: any; timestamp: number }>()
   private readonly CACHE_DURATION = 30 * 60 * 1000 // 30 minutes
 
-  handleRank(): RouterMiddleware<'/ncm-rank'> {
+  handleRank() {
     return async (ctx) => {
       const data = await this.#fetchRank()
 
@@ -34,7 +34,7 @@ class ServiceNcm {
     }
   }
 
-  handleRankDetail(): RouterMiddleware<'/ncm-rank/:id'> {
+  handleRankDetail() {
     return async (ctx) => {
       const id = ctx.params?.id || '3778678' // 默认热歌榜
       const size = +(ctx.request.url.searchParams.get('size') || '36')

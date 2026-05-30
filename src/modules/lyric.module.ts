@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceLyric {
-  handle(): RouterMiddleware<'/lyric'> {
+  handle() {
     return async (ctx) => {
       const query = ctx.request.url.searchParams.get('query')
 

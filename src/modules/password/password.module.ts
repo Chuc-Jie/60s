@@ -65,7 +65,7 @@ class ServicePassword {
   private readonly SIMILAR_CHARS = 'il1Lo0O'
   private readonly AMBIGUOUS_CHARS = '{}[]()/\\\'"`~,;.<>'
 
-  handle(): RouterMiddleware<'/password'> {
+  handle() {
     return async (ctx) => {
       const length = await Common.getParam('length', ctx.request)
       const includeNumbers = await Common.getParam('numbers', ctx.request)
@@ -109,7 +109,7 @@ class ServicePassword {
     }
   }
 
-  handleCheck(): RouterMiddleware<'/password/check'> {
+  handleCheck() {
     return async (ctx) => {
       const password = await Common.getParam('password', ctx.request)
 

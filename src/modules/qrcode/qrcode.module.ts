@@ -3,7 +3,7 @@ import { Common } from '../../common.ts'
 import qrcode, { type Params } from 'yaqrcode'
 
 class ServiceQRCode {
-  handle(): RouterMiddleware<'/qrcode'> {
+  handle() {
     return async (ctx) => {
       const text = await Common.getParam('text', ctx.request)
 

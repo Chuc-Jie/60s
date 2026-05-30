@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceOG {
-  handle(): RouterMiddleware<'/og'> {
+  handle() {
     return async (ctx) => {
       const url = await Common.getParam('url', ctx.request, true)
 

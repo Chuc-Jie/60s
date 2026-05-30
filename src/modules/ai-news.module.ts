@@ -4,7 +4,7 @@ import { load } from 'cheerio'
 class ServiceAINews {
   #cache = new Map<string, AINewsItem>()
 
-  handle(): RouterMiddleware<'/ai-news'> {
+  handle() {
     return async (ctx) => {
       const date = ctx.request.url.searchParams.get('date')
       const all = ctx.request.url.searchParams.has('all')

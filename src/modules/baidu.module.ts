@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceBaidu {
-  handleHotSearch(): RouterMiddleware<'/baidu/hot'> {
+  handleHotSearch() {
     return async (ctx) => {
       const data = await this.#fetchRealtimeHot()
 
@@ -31,7 +31,7 @@ class ServiceBaidu {
     }
   }
 
-  handleTeleplay(): RouterMiddleware<'/baidu/teleplay'> {
+  handleTeleplay() {
     return async (ctx) => {
       const data = await this.#fetchTeleplay()
 
@@ -61,7 +61,7 @@ class ServiceBaidu {
     }
   }
 
-  handleTieba(): RouterMiddleware<'/baidu/tieba'> {
+  handleTieba() {
     return async (ctx) => {
       const data = await this.#fetchTieba()
 

@@ -102,7 +102,7 @@ class ServiceDoubanWeekly {
   private cache = new Map<DoubanCategory, { data: DoubanWeeklyItem[]; timestamp: number }>()
   private readonly CACHE_TTL = 60 * 60 * 1000 // 1 hour
 
-  handle(category: DoubanCategory): RouterMiddleware<string> {
+  handle(category: DoubanCategory) {
     return async (ctx) => {
       const config = CATEGORY_CONFIG[category]
       const data = await this.#fetch(category)

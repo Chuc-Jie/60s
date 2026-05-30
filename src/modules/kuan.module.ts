@@ -66,7 +66,7 @@ interface KuanApiResponse {
 }
 
 class ServiceKuan {
-  handle(): RouterMiddleware<'/kuan'> {
+  handle() {
     return async (ctx) => {
       const data = await this.#fetch()
 

@@ -5,7 +5,7 @@ import langData from './langs.json' with { type: 'json' }
 class ServiceFanyi {
   langMap = new Map<string, { label: string; code: string; alphabet: string }>()
 
-  handle(): RouterMiddleware<'/fanyi'> {
+  handle() {
     this.initLangs()
 
     return async (ctx) => {
@@ -74,7 +74,7 @@ class ServiceFanyi {
     }
   }
 
-  handleLangs(): RouterMiddleware<'/fanyi/langs'> {
+  handleLangs() {
     return (ctx) => {
       ctx.response.body = Common.buildJson(
         [...this.langMap.values()].toSorted((a, b) => a.alphabet.localeCompare(b.alphabet)),

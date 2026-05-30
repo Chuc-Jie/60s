@@ -746,7 +746,7 @@ class ServiceWhois {
     }
   }
 
-  handle(): RouterMiddleware<'/whois'> {
+  handle() {
     return async (ctx) => {
       const domain = ctx.request.url.searchParams.get('domain')?.trim()
 

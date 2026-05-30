@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceQQ {
-  handle(): RouterMiddleware<'/qq/profile'> {
+  handle() {
     return async (ctx) => {
       const qq = await Common.getParam('qq', ctx.request)
       const size = +((await Common.getParam('size', ctx.request)) || 0)

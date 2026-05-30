@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceEpic {
-  handle(): RouterMiddleware<'/epic'> {
+  handle() {
     return async (ctx) => {
       const data = await this.#fetch()
 

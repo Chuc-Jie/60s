@@ -3,7 +3,7 @@ import { Common, dayjs, TZ_SHANGHAI } from '../common.ts'
 class ServiceTodayInHistory {
   private cache = new Map<string, HistoryItem[]>()
 
-  handle(): RouterMiddleware<'/today_in_history'> {
+  handle() {
     return async (ctx) => {
       const date = ctx.request.url.searchParams.get('date')
       const data = await this.#fetch(date ?? undefined)

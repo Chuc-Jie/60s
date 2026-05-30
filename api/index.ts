@@ -142,7 +142,7 @@ import { serviceITNews } from '../src/modules/it-news.module.ts'
 
 const serviceGoldPrice = new GoldPriceService()
 
-type HandlerFn = () => (ctx: FakeOakCtx, next: () => Promise<void>) => Promise<void>
+type HandlerFn = () => (ctx: FakeOakCtx, next: () => Promise<void>) => Promise<void> | void
 
 interface RouteEntry {
   pattern: string | RegExp
@@ -213,9 +213,10 @@ const routes: RouteEntry[] = [
   {
     pattern: /^\/v2\/ncm-rank\/(.+)$/,
     handler: () => serviceNcm.handleRankDetail(),
-    params: (pathname) => {
+    params: (pathname: string): Record<string, string> => {
       const m = pathname.match(/^\/v2\/ncm-rank\/(.+)$/)
-      return m ? { id: m[1] } : {}
+      if (m) return { id: m[1] }
+      return {}
     },
   },
 
@@ -349,7 +350,9 @@ export default async function handler(req: Request): Promise<Response> {
     // Redirect
     if (respStatus >= 300 && respStatus < 400) {
       const loc = respHeaders.get('Location') || '/'
-      return new Response(null, { status: respStatus, headers: { ...Object.fromEntries(respHeaders), Location: loc } })
+      const h: Record<string, string> = { Location: loc }
+      respHeaders.forEach((v, k) => { h[k] = v })
+      return new Response(null, { status: respStatus, headers: h })
     }
 
     // Determine content type
@@ -365,7 +368,7 @@ export default async function handler(req: Request): Promise<Response> {
     }
 
     if (respBody instanceof Uint8Array || respBody instanceof ArrayBuffer) {
-      body = respBody
+      body = respBody as BodyInit
     } else if (typeof respBody === 'string') {
       body = respBody
     } else if (respBody === null || respBody === undefined) {

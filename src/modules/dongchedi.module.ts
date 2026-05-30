@@ -2,7 +2,7 @@ import { load } from 'cheerio'
 import { Common } from '../common.ts'
 
 class ServiceDongchedi {
-  handle(): RouterMiddleware<'/dongchedi'> {
+  handle() {
     return async (ctx) => {
       const list = await this.#fetch()
 

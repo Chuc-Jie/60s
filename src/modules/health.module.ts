@@ -90,7 +90,7 @@ interface HealthResult {
 }
 
 class ServiceHealth {
-  handle(): RouterMiddleware<'/health'> {
+  handle() {
     return async (ctx) => {
       const height = await Common.getParam('height', ctx.request)
       const weight = await Common.getParam('weight', ctx.request)

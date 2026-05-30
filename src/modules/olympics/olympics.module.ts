@@ -13,7 +13,7 @@ const ONGOING_EVENT = {
 }
 
 export class OlympicsService {
-  handle(): RouterMiddleware<'/olympics'> {
+  handle() {
     return async (ctx) => {
       // 获取赛事 ID 参数，默认使用当前赛事
       const eventId = ctx.request.url.searchParams.get('id')
@@ -62,7 +62,7 @@ ${rows.join('\n')}`
     }
   }
 
-  handleEventList(): RouterMiddleware<'/olympics/events'> {
+  handleEventList() {
     return async (ctx) => {
       ctx.response.body = Common.buildJson(
         events

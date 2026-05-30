@@ -37,7 +37,7 @@ class ServiceITNews {
   #cache: CacheEntry | null = null
   #rankCache: RankCacheEntry | null = null
 
-  handle(): RouterMiddleware<'/it-news'> {
+  handle() {
     return async (ctx) => {
       let limit = Number.parseInt(ctx.request.url.searchParams.get('limit') || '') || DEFAULT_LIMIT
       limit = Math.min(limit, MAX_LIMIT)
@@ -68,7 +68,7 @@ class ServiceITNews {
     }
   }
 
-  handleRank(): RouterMiddleware<'/it-news'> {
+  handleRank() {
     return async (ctx) => {
       const rankType = ctx.request.url.searchParams.get('type') || 'day'
       const ranks = await this.#fetchRanks()

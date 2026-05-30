@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceBaike {
-  handle(): RouterMiddleware<'/baike'> {
+  handle() {
     return async (ctx) => {
       const word = await Common.getParam('word', ctx.request)
 

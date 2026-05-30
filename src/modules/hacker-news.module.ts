@@ -9,7 +9,7 @@ class ServiceHackerNews {
   // 10 minutes
   private readonly CACHE_TTL_MS = 10 * 60 * 1000
 
-  handle(type: HackerNewsType = 'top'): RouterMiddleware<'/hacker-news'> {
+  handle(type: HackerNewsType = 'top') {
     return async (ctx) => {
       const isValidType = Object.keys(HackerNewsTypeMap).includes(type)
 

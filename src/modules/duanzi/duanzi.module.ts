@@ -2,7 +2,7 @@ import { Common } from '../../common.ts'
 import duanziData from './duanzi.json' with { type: 'json' }
 
 class ServiceDuanzi {
-  handle(): RouterMiddleware<'/duanzi'> {
+  handle() {
     return async (ctx) => {
       const id = await Common.getParam('id', ctx.request)
 

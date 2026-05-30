@@ -22,7 +22,7 @@ interface DailyNewsItem {
 class Service60sRss {
   #cache = new Map<string, DailyNewsItem>()
 
-  handle(): RouterMiddleware<'/60s/rss'> {
+  handle() {
     return async (ctx) => {
       const items = await this.#fetchLast10Days()
       const rssXml = this.#generateRSS(items)

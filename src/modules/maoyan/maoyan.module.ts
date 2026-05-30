@@ -2,7 +2,7 @@ import { Common, dayjs } from '../../common.ts'
 import { fetchBoxOfficeByType } from './encode.ts'
 
 class ServiceMaoyan {
-  handleAllMovie(): RouterMiddleware<'/maoyan/all/movie'> {
+  handleAllMovie() {
     return async (ctx) => {
       const { list, tips } = await this.fetchHTMLData()
 
@@ -47,7 +47,7 @@ class ServiceMaoyan {
     }
   }
 
-  handleRealtime(type: 'movie' | 'tv' | 'web'): RouterMiddleware<'/maoyan/movie'> {
+  handleRealtime(type: 'movie' | 'tv' | 'web') {
     return async (ctx) => {
       const date = ctx.request.url.searchParams.get('date') || ''
       const data = await fetchBoxOfficeByType(type, date)

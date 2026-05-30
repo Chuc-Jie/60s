@@ -24,7 +24,7 @@ class ServiceMoyu {
     return parts.length >= 2 ? parts[1].trim() : holidayName
   }
 
-  handle(): RouterMiddleware<'/moyu'> {
+  handle() {
     return async (ctx) => {
       const dateParam = await Common.getParam('date', ctx.request)
       const data = this.getCalendarInfo(dateParam)

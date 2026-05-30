@@ -11,7 +11,7 @@ interface JavaScriptQuestion {
 }
 
 class ServiceAwesomeJs {
-  handle(): RouterMiddleware<'/awesome-js'> {
+  handle() {
     return async (ctx) => {
       const request = ctx.request
       const id = await Common.getParam('id', request)

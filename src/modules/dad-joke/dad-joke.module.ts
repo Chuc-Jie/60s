@@ -3,7 +3,7 @@ import dadJokeList from './dad-joke.json' with { type: 'json' }
 
 class ServiceDadJoke {
 
-  handle(): RouterMiddleware<'/dad-joke'> {
+  handle() {
     return async (ctx) => {
       const id = await Common.getParam('id', ctx.request)
 

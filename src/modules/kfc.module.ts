@@ -5,7 +5,7 @@ class ServiceKfc {
   private cacheDuration = 1 * 24 * 60 * 60 * 1000 // 缓存 1 天
   private cache: string[] = []
 
-  handle(): RouterMiddleware<'/kfc'> {
+  handle() {
     return async (ctx) => {
       const list = await this.#fetch()
       const result = Common.randomItem(list)

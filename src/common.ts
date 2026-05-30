@@ -101,7 +101,11 @@ export class Common {
     return arr[Math.floor(Math.random() * arr.length)]
   }
 
-  static async getParam(name: string, request: Request & { _bodyJson?: Record<string, any> }, parseBody = false) {
+  static async getParam(
+    name: string,
+    request: { url: URL; _bodyJson?: Record<string, any>; body?: { json: () => Promise<any> } | null },
+    parseBody = false,
+  ) {
     const value = request.url.searchParams.get(name) ?? ''
 
     if (!parseBody && value) return value
@@ -110,6 +114,7 @@ export class Common {
       const json = request?._bodyJson
 
       if (!json) {
+        if (!request.body?.json) return value
         request._bodyJson = await request.body.json()
       } else {
         return json[name] ?? ''
@@ -148,6 +153,8 @@ export class Common {
     } = {},
   ): string {
     const { removeNullish = true } = options
+    if (typeof params === 'string') return params
+    if (params instanceof URLSearchParams) return params.toString()
     const entries = Object.entries(params)
     const hasArray = entries.some(([, value]) => Array.isArray(value))
 
@@ -157,17 +164,17 @@ export class Common {
         if (Array.isArray(value)) {
           for (const item of value) {
             if (removeNullish && this.isNullish(item)) continue
-            result.append(key, item)
+            result.append(key, String(item))
           }
         } else {
           if (removeNullish && this.isNullish(value)) continue
-          result.append(key, value)
+          result.append(key, String(value))
         }
       }
       return result.toString()
     }
 
-    return new URLSearchParams(entries).toString()
+    return new URLSearchParams(entries as [string, string][]).toString()
   }
 
   static getApiInfo() {

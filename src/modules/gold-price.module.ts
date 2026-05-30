@@ -200,7 +200,7 @@ export class GoldPriceService {
     }
   }
 
-  handle(): RouterMiddleware<'/gold-price'> {
+  handle() {
     return async (ctx) => {
       const data = await this.#fetch()
       const encoding = ctx.state.encoding as string | undefined

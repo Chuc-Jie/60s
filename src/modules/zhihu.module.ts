@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceZhihuHot {
-  handle(): RouterMiddleware<'/zhihu'> {
+  handle() {
     return async (ctx) => {
       const data = await this.#fetch()
 

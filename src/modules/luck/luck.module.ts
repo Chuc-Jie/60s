@@ -2,7 +2,7 @@ import { Common } from '../../common.ts'
 import luckData from './luck.json' with { type: 'json' }
 
 class ServiceLuck {
-  handle(): RouterMiddleware<'/luck'> {
+  handle() {
     return async (ctx) => {
       const id = await Common.getParam('id', ctx.request)
       

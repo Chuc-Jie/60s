@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceBili {
-  handle(): RouterMiddleware<'/bili'> {
+  handle() {
     return async (ctx) => {
       const data = await this.#fetch()
 

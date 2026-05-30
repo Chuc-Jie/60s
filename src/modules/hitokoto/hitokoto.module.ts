@@ -2,7 +2,7 @@ import { Common } from '../../common.ts'
 import hitokotoData from './hitokoto.json' with { type: 'json' }
 
 class ServiceHitokoto {
-  handle(): RouterMiddleware<'/hitokoto'> {
+  handle() {
     return async (ctx) => {
       const id = await Common.getParam('id', ctx.request)
       

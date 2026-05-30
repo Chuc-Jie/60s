@@ -2,7 +2,7 @@ import { Common } from '../../common.ts'
 import fabingData from './fabing.json' with { type: 'json' }
 
 class ServiceFabing {
-  handle(): RouterMiddleware<'/fabing'> {
+  handle() {
     return async (ctx) => {
       const name = (await Common.getParam('name', ctx.request)) || '主人'
       const id = await Common.getParam('id', ctx.request)

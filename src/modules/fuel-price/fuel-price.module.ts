@@ -38,7 +38,7 @@ class ServiceFuelPrice {
   // 60 minutes
   private readonly CACHE_TTL_MS = 60 * 60 * 1000
 
-  handle(): RouterMiddleware<'/fuel/price'> {
+  handle() {
     return async (ctx) => {
       try {
         const queryRegion = ctx.request.url.searchParams.get('region') || '北京'

@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceDouyin {
-  handle(): RouterMiddleware<'/douyin'> {
+  handle() {
     return async (ctx) => {
       const data = await this.#fetch()
 

@@ -1,7 +1,7 @@
 import { Common } from '../common.ts'
 
 class ServiceChemical {
-  handle(): RouterMiddleware<'/chemical'> {
+  handle() {
     return async (ctx) => {
       const id = await Common.getParam('id', ctx.request)
 

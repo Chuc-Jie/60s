@@ -15,7 +15,7 @@ const xhsHeaders = {
 }
 
 class ServiceRednote {
-  handle(): RouterMiddleware<'/rednote'> {
+  handle() {
     return async (ctx) => {
       const response = await fetch(xhsApiUrl, {
         method: 'GET',

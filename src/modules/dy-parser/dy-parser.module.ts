@@ -1,7 +1,7 @@
 import { Common } from '../../common.ts'
 
 class ServiceDyParser {
-  handle(): RouterMiddleware<'/dy-parser'> {
+  handle() {
     return async (ctx) => {}
   }
 }

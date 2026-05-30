@@ -79,7 +79,7 @@ interface QuarkHotItem {
 }
 
 class ServiceQuark {
-  handle(): RouterMiddleware<'/quark'> {
+  handle() {
     return async (ctx) => {
       const data = await this.#fetch()
 

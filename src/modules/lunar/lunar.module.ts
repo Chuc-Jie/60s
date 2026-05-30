@@ -2,7 +2,7 @@ import { SolarTime, LegalHoliday, Zodiac, Week, Phase, Constellation } from 'tym
 import { Common, dayjs, TZ_SHANGHAI } from '../../common.ts'
 
 class ServiceLunar {
-  handle(): RouterMiddleware<'/lunar'> {
+  handle() {
     return (ctx) => {
       const date = ctx.request.url.searchParams.get('date')?.trim()
 

@@ -4,7 +4,7 @@ import { Buffer } from 'node:buffer'
 import { Common } from '../common.ts'
 
 class ServiceHash {
-  handle(): RouterMiddleware<'/hash'> {
+  handle() {
     return async (ctx) => {
       const content = await Common.getParam('content', ctx.request, true)
 

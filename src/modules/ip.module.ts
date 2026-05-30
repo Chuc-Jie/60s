@@ -65,7 +65,7 @@ class ServiceIP {
     }
   }
 
-  handle(): RouterMiddleware<'/ip'> {
+  handle() {
     return async (ctx) => {
       let ip = this.getClientIP(ctx.request.headers) || ctx.request.ip
       const inputIp = ctx.request.url.searchParams.get('ip') || ''
