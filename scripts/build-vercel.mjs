@@ -1,5 +1,5 @@
 import * as esbuild from 'esbuild'
-import { readFileSync, existsSync, mkdirSync, unlinkSync, writeFileSync } from 'node:fs'
+import { readFileSync, existsSync, mkdirSync } from 'node:fs'
 
 const pkg = JSON.parse(readFileSync('package.json', 'utf-8'))
 
@@ -9,7 +9,6 @@ if (!existsSync('api')) {
   mkdirSync('api')
 }
 
-// Build as ESM → output as .js (project has "type": "module")
 await esbuild.build({
   entryPoints: ['api/index.ts'],
   bundle: true,
@@ -24,6 +23,5 @@ await esbuild.build({
   },
 })
 
-unlinkSync('api/index.ts')
-
+// Don't delete api/index.ts — let vercel.json functions config handle routing
 console.log('✅ api/index.js built successfully (ESM)')

@@ -1,8 +1,7 @@
 {
-  "buildCommand": "pnpm run build:vercel",
   "functions": {
-    "api/index.js": {
-      "runtime": "nodejs22.x"
+    "api/index.ts": {
+      "includeFiles": "src/**"
     }
   },
   "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }]
