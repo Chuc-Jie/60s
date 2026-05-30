@@ -9,14 +9,14 @@ if (!existsSync('api')) {
   mkdirSync('api')
 }
 
-// Build as ESM — avoids the CJS module.exports ordering issue
+// Build as ESM → output as .js (project has "type": "module")
 await esbuild.build({
   entryPoints: ['api/index.ts'],
   bundle: true,
   platform: 'node',
   target: 'node20',
   format: 'esm',
-  outfile: 'api/index.mjs',
+  outfile: 'api/index.js',
   external,
   resolveExtensions: ['.ts', '.tsx', '.js', '.json'],
   banner: {
@@ -24,7 +24,6 @@ await esbuild.build({
   },
 })
 
-// Remove .ts file so Vercel doesn't re-compile it
 unlinkSync('api/index.ts')
 
-console.log('✅ api/index.mjs built successfully (ESM format)')
+console.log('✅ api/index.js built successfully (ESM)')
