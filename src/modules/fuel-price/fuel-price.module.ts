@@ -2,8 +2,6 @@ import regions from './regions.json' with { type: 'json' }
 import { load } from 'cheerio'
 import { Common } from '../../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 type FuelRegion = (typeof regions)[number]
 
 const sortedRegion = regions.toSorted((a, b) => a.region.length - b.region.length)

@@ -1,7 +1,5 @@
 import { Common } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceBaike {
   handle(): RouterMiddleware<'/baike'> {
     return async (ctx) => {

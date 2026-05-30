@@ -1,8 +1,6 @@
 import { Common } from '../common.ts'
 import whois from 'whois-raw'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 // ============== 类型定义 ==============
 
 interface RDAPEntity {

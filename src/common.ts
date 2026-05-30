@@ -4,8 +4,6 @@ import { Buffer } from 'node:buffer'
 import { COMMON_MSG, config } from './config.ts'
 
 import type { BinaryToTextEncoding } from 'node:crypto'
-import type { Request, RouterContext } from '@oak/oak'
-
 import _dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc.js'
 import timezone from 'dayjs/plugin/timezone.js'
@@ -43,7 +41,7 @@ export class Common {
     return response
   }
 
-  static requireArguments(name: string | string[], response: RouterContext<any, Record<string, any>>['response']) {
+  static requireArguments(name: string | string[], response: { status: number; body: any }) {
     response.status = 400
     const args = Array.isArray(name) ? name : [name]
 

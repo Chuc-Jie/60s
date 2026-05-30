@@ -1,8 +1,6 @@
 import { load } from 'cheerio'
 import { Common, dayjs, TZ_SHANGHAI } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 interface MetalPrice {
   name: string
   sell_price: string

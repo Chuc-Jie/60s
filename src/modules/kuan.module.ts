@@ -1,8 +1,6 @@
 import dayjs from 'dayjs'
 import { Common } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 interface CoolApkRawItem {
   id: number
   hash: string

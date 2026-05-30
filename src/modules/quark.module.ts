@@ -1,7 +1,5 @@
 import { Common } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 interface QuarkImage {
   url: string
   width: number

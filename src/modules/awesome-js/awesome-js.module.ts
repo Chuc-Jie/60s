@@ -1,8 +1,6 @@
 import { Common } from '../../common.ts'
 import questionsData from './awesome-js.json' with { type: 'json' }
 
-import type { RouterMiddleware } from '@oak/oak'
-
 interface JavaScriptQuestion {
   id: number
   question: string

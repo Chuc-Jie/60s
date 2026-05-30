@@ -3,8 +3,6 @@ import events from './events.json' with { type: 'json' }
 
 import { Common, dayjs, TZ_SHANGHAI } from '../../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 // 默认赛事 ID（2026
 const ONGOING_EVENT_CODE = 'wmr-owg2026'
 const ONGOING_EVENT = {

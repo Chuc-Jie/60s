@@ -1,8 +1,6 @@
 import { Common } from '../../common.ts'
 import commonPasswordsData from './passwords.json' with { type: 'json' }
 
-import type { RouterMiddleware } from '@oak/oak'
-
 interface PasswordParams {
   length: number
   includeNumbers: boolean

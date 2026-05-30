@@ -1,8 +1,6 @@
 import { load } from 'cheerio'
 import { Common } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceDongchedi {
   handle(): RouterMiddleware<'/dongchedi'> {
     return async (ctx) => {

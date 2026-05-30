@@ -1,8 +1,6 @@
 import { Common } from '../../common.ts'
 import dadJokeList from './dad-joke.json' with { type: 'json' }
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceDadJoke {
 
   handle(): RouterMiddleware<'/dad-joke'> {

@@ -1,8 +1,6 @@
 import { Common, dayjs } from '../../common.ts'
 import { fetchBoxOfficeByType } from './encode.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceMaoyan {
   handleAllMovie(): RouterMiddleware<'/maoyan/all/movie'> {
     return async (ctx) => {

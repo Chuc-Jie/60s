@@ -1,7 +1,5 @@
 import { Common } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceQQ {
   handle(): RouterMiddleware<'/qq/profile'> {
     return async (ctx) => {

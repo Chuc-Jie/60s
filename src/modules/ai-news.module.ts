@@ -1,8 +1,6 @@
 import { Common, dayjs, TZ_SHANGHAI } from '../common.ts'
 import { load } from 'cheerio'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceAINews {
   #cache = new Map<string, AINewsItem>()
 

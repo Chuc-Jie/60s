@@ -1,7 +1,5 @@
 import { Common } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceToutiao {
   handle(): RouterMiddleware<'/toutiao'> {
     return async (ctx) => {

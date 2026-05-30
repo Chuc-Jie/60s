@@ -2,8 +2,6 @@ import crypto from 'node:crypto'
 import { Common } from '../../common.ts'
 import langData from './langs.json' with { type: 'json' }
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceFanyi {
   langMap = new Map<string, { label: string; code: string; alphabet: string }>()
 

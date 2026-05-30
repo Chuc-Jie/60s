@@ -2,8 +2,6 @@ import { Buffer } from 'node:buffer'
 import { Common } from '../../common.ts'
 import qrcode, { type Params } from 'yaqrcode'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceQRCode {
   handle(): RouterMiddleware<'/qrcode'> {
     return async (ctx) => {

@@ -1,7 +1,5 @@
 import dayjs from 'dayjs'
 import { Common } from '../common.ts'
-import type { RouterMiddleware } from '@oak/oak'
-
 const HN_BASE_URL: string = 'https://hacker-news.firebaseio.com/v0'
 const DEFAULT_LIMIT_SIZE: number = 10
 const DEFAULT_MAX_LIMIT_SIZE: number = 35

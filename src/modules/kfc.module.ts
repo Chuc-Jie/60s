@@ -1,7 +1,5 @@
 import { Common } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceKfc {
   private lastFetchTime = 0
   private cacheDuration = 1 * 24 * 60 * 60 * 1000 // 缓存 1 天

@@ -1,7 +1,5 @@
 import { Common, dayjs, TZ_SHANGHAI } from '../common.ts'
 import { load } from 'cheerio'
-import type { RouterMiddleware } from '@oak/oak'
-
 const RSS_URL = 'https://www.ithome.com/rss/'
 const DEFAULT_LIMIT = 20
 const MAX_LIMIT = 50

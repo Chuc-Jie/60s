@@ -4,6 +4,9 @@ node_modules
 
 test/*.json
 
-# Vercel build artifacts
+# Vercel build artifacts (pre-built by esbuild, not needed anymore)
 api/index.js
 api/index.mjs
+api/package.json
+
+

@@ -1,6 +1,4 @@
 import { Common } from '../common.ts'
-import type { RouterMiddleware } from '@oak/oak'
-
 interface HSLColor {
   h: number
   s: number

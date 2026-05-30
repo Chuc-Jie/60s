@@ -1,8 +1,6 @@
 import { SolarTime, LegalHoliday, Zodiac, Week, Phase, Constellation } from 'tyme4ts'
 import { Common, dayjs, TZ_SHANGHAI } from '../../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceLunar {
   handle(): RouterMiddleware<'/lunar'> {
     return (ctx) => {

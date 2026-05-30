@@ -1,7 +1,5 @@
 import { Common } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 type DoubanCategory = 'movie' | 'tv_chinese' | 'tv_global' | 'show_chinese' | 'show_global'
 
 interface DoubanRawItem {

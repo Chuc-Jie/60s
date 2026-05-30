@@ -1,7 +1,5 @@
 import { Common, dayjs } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 interface BingItem {
   title: string
   headline: string

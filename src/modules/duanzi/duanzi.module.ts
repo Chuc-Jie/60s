@@ -1,8 +1,6 @@
 import { Common } from '../../common.ts'
 import duanziData from './duanzi.json' with { type: 'json' }
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceDuanzi {
   handle(): RouterMiddleware<'/duanzi'> {
     return async (ctx) => {

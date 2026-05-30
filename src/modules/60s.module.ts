@@ -1,7 +1,6 @@
 import { Common, dayjs, TZ_SHANGHAI } from '../common.ts'
 import { SolarDay } from 'tyme4ts'
 
-import type { RouterMiddleware } from '@oak/oak'
 import { config } from '../config.ts'
 
 const WEEK_DAYS = ['日', '一', '二', '三', '四', '五', '六']

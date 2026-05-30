@@ -1,7 +1,5 @@
 import { Common, dayjs } from '../common.ts'
 import { filesize } from 'filesize'
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceNcm {
   private cache = new Map<string, { data: any; timestamp: number }>()
   private readonly CACHE_DURATION = 30 * 60 * 1000 // 30 minutes

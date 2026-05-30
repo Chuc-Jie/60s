@@ -1,7 +1,5 @@
 import { Common, dayjs, TZ_SHANGHAI } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceTodayInHistory {
   private cache = new Map<string, HistoryItem[]>()
 

@@ -1,6 +1,4 @@
 import { Common } from '../common.ts'
-import type { RouterMiddleware } from '@oak/oak'
-
 const xhsApiUrl = 'https://edith.xiaohongshu.com/api/sns/v1/search/hot_list'
 
 const xhsHeaders = {

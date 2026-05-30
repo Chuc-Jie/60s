@@ -1,8 +1,6 @@
 import { Common } from '../../common.ts'
 import answerData from './answer.json' with { type: 'json' }
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceAnswer {
   handle(): RouterMiddleware<'/answer'> {
     return async (ctx) => {

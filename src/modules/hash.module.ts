@@ -3,8 +3,6 @@ import crypto from 'node:crypto'
 import { Buffer } from 'node:buffer'
 import { Common } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceHash {
   handle(): RouterMiddleware<'/hash'> {
     return async (ctx) => {

@@ -1,8 +1,6 @@
 import chineseDays from 'chinese-days'
 import { Common, dayjs } from '../common.ts'
 
-import type { RouterMiddleware } from '@oak/oak'
-
 const { isHoliday, isWorkday, getDayDetail, getLunarDate, getSolarTerms, getLunarFestivals } = chineseDays
 
 /**

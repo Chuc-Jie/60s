@@ -1,6 +1,4 @@
 import { Common } from '../common.ts'
-import type { RouterMiddleware } from '@oak/oak'
-
 class ServiceIP {
   getClientIP(requestHeaders: Headers): string {
     const headerFields = ['x-forwarded-for', 'x-real-ip', 'x-client-ip', 'x-real-client-ip']
