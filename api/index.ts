@@ -45,7 +45,8 @@ function createOakCtx(req: Request, params: Record<string, string> = {}): FakeOa
       body: {
         json: async () => {
           try {
-            return await req.clone().json()
+            const cloned = req.clone()
+            return await cloned.json()
           } catch {
             return {}
           }
@@ -283,17 +284,46 @@ async function endpointsHandler(ctx: FakeOakCtx, next: () => Promise<void>) {
 
 // ============= Main Vercel handler =============
 
-export default async function handler(req: Request): Promise<Response> {
+export default async function handler(nodeReq: any, nodeRes: any) {
+  // Convert IncomingMessage + query params to a standard Request object
+  const host = nodeReq.headers.host || 'localhost'
+  const proto = nodeReq.headers['x-forwarded-proto'] || 'http'
+  const fullUrl = `${proto}://${host}${nodeReq.url}`
+
+  // Build headers
+  const headers = new Headers()
+  for (const [k, v] of Object.entries(nodeReq.headers)) {
+    if (v) {
+      if (Array.isArray(v)) v.forEach((vv: string) => headers.append(k, vv))
+      else headers.append(k, v as string)
+    }
+  }
+
+  // Read body for POST requests
+  let body: BodyInit | null = null
+  if (nodeReq.method !== 'GET' && nodeReq.method !== 'HEAD') {
+    body = await new Promise((resolve) => {
+      const chunks: Buffer[] = []
+      nodeReq.on('data', (c: Buffer) => chunks.push(c))
+      nodeReq.on('end', () => resolve(Buffer.concat(chunks)))
+    })
+  }
+
+  const req = new Request(fullUrl, {
+    method: nodeReq.method,
+    headers,
+    body,
+  })
+
   // CORS preflight
   if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      },
+    nodeRes.writeHead(204, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     })
+    nodeRes.end()
+    return
   }
 
   const url = new URL(req.url)
@@ -301,7 +331,9 @@ export default async function handler(req: Request): Promise<Response> {
 
   // Favicon redirect
   if (pathname === '/favicon.ico') {
-    return Response.redirect('https://avatar.viki.moe', 302)
+    nodeRes.writeHead(302, { Location: 'https://avatar.viki.moe' })
+    nodeRes.end()
+    return
   }
 
   // Match route
@@ -324,13 +356,12 @@ export default async function handler(req: Request): Promise<Response> {
   }
 
   if (!matchedRoute) {
-    return new Response(
-      JSON.stringify({
-        code: 404,
-        message: '404, 接口被吃掉了，请检查！应用接口需要在 Base URL 后面带上版本号，如 /v2/60s',
-      }),
-      { status: 404, headers: corsHeaders('application/json') },
-    )
+    nodeRes.writeHead(404, corsHeaders('application/json'))
+    nodeRes.end(JSON.stringify({
+      code: 404,
+      message: '404, 接口被吃掉了，请检查！应用接口需要在 Base URL 后面带上版本号，如 /v2/60s',
+    }))
+    return
   }
 
   const ctx = createOakCtx(req, params)
@@ -339,57 +370,58 @@ export default async function handler(req: Request): Promise<Response> {
     const middleware = matchedRoute.handler()
     await middleware(ctx, async () => {})
 
-    // Build response from ctx
+    // Build response from ctx → nodeRes
     const respStatus = ctx.response.status
     const respBody = ctx.response.body
-    const respHeaders = new Headers(ctx.response.headers)
 
     // CORS
-    respHeaders.set('Access-Control-Allow-Origin', '*')
+    const respHeaders: Record<string, string> = { 'Access-Control-Allow-Origin': '*' }
+    ctx.response.headers.forEach((v, k) => { respHeaders[k] = v })
+
+    // Content-Type
+    if (!respHeaders['Content-Type'] && !respHeaders['content-type']) {
+      respHeaders['Content-Type'] = 'application/json; charset=utf-8'
+    }
 
     // Redirect
     if (respStatus >= 300 && respStatus < 400) {
-      const loc = respHeaders.get('Location') || '/'
-      const h: Record<string, string> = { Location: loc }
-      respHeaders.forEach((v, k) => { h[k] = v })
-      return new Response(null, { status: respStatus, headers: h })
+      nodeRes.writeHead(respStatus, respHeaders)
+      nodeRes.end()
+      return
     }
 
-    // Determine content type
-    if (!respHeaders.has('Content-Type')) {
-      respHeaders.set('Content-Type', 'application/json; charset=utf-8')
-    }
+    // Write head
+    nodeRes.writeHead(respStatus, respHeaders)
 
     // Serialize body
-    let body: BodyInit | null = null
-
-    if (respBody instanceof ReadableStream) {
-      return new Response(respBody, { status: respStatus, headers: respHeaders })
-    }
-
-    if (respBody instanceof Uint8Array || respBody instanceof ArrayBuffer) {
-      body = respBody as BodyInit
+    if (respBody instanceof Buffer || respBody instanceof Uint8Array) {
+      nodeRes.end(respBody)
+    } else if (respBody instanceof ReadableStream) {
+      // Stream the response
+      const reader = respBody.getReader()
+      const pump = async () => {
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) { nodeRes.end(); break }
+          nodeRes.write(value)
+        }
+      }
+      pump()
+      return
     } else if (typeof respBody === 'string') {
-      body = respBody
+      nodeRes.end(respBody)
     } else if (respBody === null || respBody === undefined) {
-      body = null
+      nodeRes.end()
     } else {
-      body = JSON.stringify(respBody)
+      nodeRes.end(JSON.stringify(respBody))
     }
-
-    return new Response(body, { status: respStatus, headers: respHeaders })
   } catch (err: any) {
     console.error('[60s-api]', err)
-    return new Response(
-      JSON.stringify({ code: 500, message: `服务器出错了... ${err.message || err}` }),
-      { status: 500, headers: corsHeaders('application/json') },
-    )
+    nodeRes.writeHead(500, corsHeaders('application/json'))
+    nodeRes.end(JSON.stringify({ code: 500, message: `服务器出错了... ${err.message || err}` }))
   }
 }
 
 function corsHeaders(ct: string): Record<string, string> {
-  return {
-    'Content-Type': ct,
-    'Access-Control-Allow-Origin': '*',
-  }
+  return { 'Content-Type': ct, 'Access-Control-Allow-Origin': '*' }
 }
