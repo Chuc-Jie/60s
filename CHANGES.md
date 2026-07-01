@@ -286,3 +286,93 @@ fake ctx 适配层的本质是**在 HTTP 层和业务层之间插入一个轻量
 - ✅ 65 个接口一次性全部可用，无需逐个改
 
 如果采用"逐个模块重写"的方案，需要修改 54 个文件的输出格式化逻辑（`ctx.response.body = formatText(data)` → `return formatText(data)`），工作量数倍于此，且容易引入回归 bug。
+
+---
+
+## 八、平台兼容性分析
+
+### 8.1 当前支持的平台
+
+我们当前的 handler 签名是：
+
+```ts
+export default async function handler(nodeReq, nodeRes) { ... }
+```
+
+这是 **Node.js 标准的 `(IncomingMessage, ServerResponse)` 回调**，和 `http.createServer(handler).listen()` 完全一致。因此：
+
+| 平台 | 能否部署 | 原因 |
+|------|----------|------|
+| **Vercel** | ✅ | 原生就是这个接口 |
+| **普通 VPS/服务器** | ✅ | 一行代码 `createServer(handler).listen(4399)` |
+| **Docker** | ✅ | 容器里跑 Node.js 即可 |
+| **Railway / Render / Fly.io** | ✅ | 这些平台都接受标准 Node.js HTTP handler |
+| **Cloudflare Workers** | ❌ | 要求 `export default { fetch(request) }` 签名，不兼容 |
+| **Deno Deploy** | ❌ | 要求 `Deno.serve(fetch)` 接口，不兼容 |
+
+### 8.2 为什么 54 个模块不受平台限制
+
+模块依赖的是 fake ctx，它只关心这三件事：
+
+```ts
+ctx.request.url.searchParams  // URL 参数提取
+ctx.response.body = xxx       // 响应体设置
+ctx.state.encoding            // 编码类型
+```
+
+跟底层是哪个 HTTP 平台**完全无关**。fake ctx 就是一层隔离：
+
+```
+平台 A (Vercel)       →  fake ctx  ← 54 个模块（不动）
+平台 B (普通服务器)    →  fake ctx  ← 54 个模块（不动）
+平台 C (Cloudflare)   →  fake ctx  ← 54 个模块（不动）
+```
+
+换平台只需写一个新的入口文件（适配该平台的 HTTP 接口 → fake ctx），**模块代码一个都不用动**。
+
+---
+
+## 九、多平台架构设计
+
+### 9.1 为什么不能一个文件自动判断平台
+
+每个平台对入口文件的**导出格式**有硬性要求，且这些要求在**编译时**就确定了：
+
+| 平台 | 要求 | 冲突点 |
+|------|------|--------|
+| Vercel | `export default function (req, res) {}` | CJS 回调风格 |
+| Cloudflare Workers | `export default { fetch(request) {} }` | 对象导出风格 |
+| Deno Deploy | `Deno.serve((request) => {})` | 是执行**语句**，不是导出 |
+| 普通服务器 | `createServer(handler).listen()` | 是**启动逻辑**，不是导出 |
+
+一个文件不可能同时满足这些互斥的导出格式——它们在编译时就绑定到各自平台了，不存在运行时"检测并切换"。
+
+### 9.2 正确架构：共享核心 + 薄包装
+
+将 `api/index.ts` 中的请求处理逻辑抽离为公共核心 `src/handler.ts`，各平台写一个 5-10 行的入口文件：
+
+```
+                           ┌─→ api/index.ts            (Vercel)
+54 个业务模块                │   转 (req, res) → fake ctx → handler
+(src/modules/*)  ──→       ├─→ server.ts               (普通服务器)
+[一行不改]                   │   createServer(handler)
+                           ├─→ cf-worker.ts            (Cloudflare Workers)
+                           │   转 (Request) → fake ctx → handler
+                           └─→ deno-serve.ts           (Deno Deploy)
+                               转 (Request) → fake ctx → handler
+```
+
+以 Cloudflare Workers 为例，新增只需一个文件：
+
+```ts
+// cf-worker.ts — Cloudflare Workers 入口
+import { handleRequest } from './src/handler.ts'
+
+export default {
+  async fetch(request: Request): Promise<Response> {
+    return handleRequest(request)
+  }
+}
+```
+
+其中 `src/handler.ts` 接收 `Request`，构造 fake ctx，返回 `Response`。这个核心逻辑和当前 `api/index.ts` 的处理部分完全相同，只是去掉了 `(req, res)` 的转换层，直接工作在 `Request → Response` 上。
