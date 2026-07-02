@@ -10,3 +10,7 @@ api/index.mjs
 api/package.json
 
 
+60s-report.html
+
+.codegraph/
+.reasonix/
