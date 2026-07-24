@@ -102,7 +102,7 @@ class ServiceFuelPrice {
     }
 
     const cachedEntry = this.cache.get(cacheKey)
-    const isCacheValid = cachedEntry && Date.now() - cachedEntry.ts > this.CACHE_TTL_MS
+    const isCacheValid = cachedEntry && Date.now() - cachedEntry.ts < this.CACHE_TTL_MS
 
     if (isCacheValid) {
       return cachedEntry
